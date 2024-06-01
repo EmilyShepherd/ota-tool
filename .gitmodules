@@ -9,7 +9,7 @@
 	url = https://gitlab.com/bzip2/bzip2.git
 [submodule "chromeos_update_engine/libchrome"]
 	path = lib/libchrome
-	url = https://github.com/anonymix007/libchrome
+	url = https://android.googlesource.com/platform/external/libchrome
 [submodule "chromeos_update_engine/zucchini"]
 	path = lib/zucchini
 	url = https://github.com/anonymix007/zucchini
