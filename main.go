@@ -9,10 +9,8 @@ import (
 	"strings"
 	"time"
 
-	humanize "github.com/dustin/go-humanize"
-	"github.com/olekukonko/tablewriter"
-
 	"github.com/EmilyShepherd/ota-tool/pkg/payload"
+	"github.com/EmilyShepherd/ota-tool/internal/cmd"
 )
 
 func main() {
@@ -25,6 +23,12 @@ func main() {
 		inputDirectory  string
 		concurrency     int
 	)
+
+	group := &cmd.PayloadCmd{}
+	group.Register("list", &cmd.List{})
+	group.Execute(os.Args[1:], nil)
+
+	return
 
 	flag.IntVar(&concurrency, "concurrency", 4, "Number of multiple workers to extract")
 	flag.BoolVar(&list, "list", false, "Show list of partitions in payload.bin and exit")
@@ -58,21 +62,6 @@ func main() {
 	}
 
 	update.Init()
-
-	if list {
-		table := tablewriter.NewWriter(os.Stdout)
-		table.SetHeader([]string{"Partition", "Old Size", "New Size"})
-		for _, partition := range update.Partitions {
-			table.Append([]string{
-				partition.GetPartitionName(),
-				humanize.Bytes(*partition.GetOldPartitionInfo().Size),
-				humanize.Bytes(*partition.GetNewPartitionInfo().Size),
-			})
-		}
-		table.SetBorder(false)
-		table.Render()
-		return
-	}
 
 	now := time.Now()
 
